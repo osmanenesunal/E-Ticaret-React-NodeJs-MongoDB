@@ -1,13 +1,25 @@
+import axios from "axios";
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function LoginComponent(){
-    const   [email , setEmail]  = useState();
-    const [password , setPassword] = useState();
+    const navigate =useNavigate()
+    const   [email , setEmail]  = useState("");
+    const [password , setPassword] = useState("");
 
-    const login = (e)=>{
+    const login = async (e)=>{
         e.preventDefault()
-        console.log({email, password})
+        try {
+            let model = {email:email , password:password};
+            const response = await axios.post("http://localhost:5000/auth/login", model)
+            localStorage.setItem("token", response.data.token)
+            localStorage.setItem("user", JSON.stringify(response.data.user))
+            navigate("/")
+        }
+         catch (error) {
+            console.error(error)
+        }
+
     }
     return(
         <>

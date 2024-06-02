@@ -77,13 +77,13 @@ const secretKey = "Gizli anahtarim Gizli anahtarim Gizli anahtarim"
 
 //Register İşlemim 
 
-app.post("auth/register", async (req,res)=>{
+app.post("/auth/register", async (req,res)=>{
 try {
-    const {name , email, password} =req.body
+    const {email,name,password} =req.body
     let user = new User({
         _id: uuidv4(),
-        name : name,
         email:email,
+        name : name,
         password:password
     })
     await user.save()
@@ -95,14 +95,12 @@ try {
 } catch (error) {
     res.status(500).json({error:error.message})
 }
-
-
 })
 //Register İşlemim 
 
 
 //Login Methodum 
-app.post("auth/login" ,async(req, res) =>{
+app.post("/auth/login" ,async(req, res) =>{
     try {
         const {email, password} = req.body;
         const users = await User.find({email: email , password : password})   
