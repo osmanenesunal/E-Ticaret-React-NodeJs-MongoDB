@@ -30,14 +30,14 @@ function LoginComponent(){
                 <h1>Giriş Yap</h1>
             </div>
             <div className="card-body">
-               <form onSubmit={login}>
+               <form onSubmit={login}> 
                 <div className="form-group">
                 <label  htmlFor="email">E-Mail Adresi</label>
-                <input value={email} onChange={(e)=>{setEmail(e.target.value)}} className="form-control" type="email" id="email" name="email"></input>
+                <input value={email} onChange={(e)=>setEmail(e.target.value)} className="form-control" type="email" id="email" name="email"></input>
                 </div>
                 <div className="form-group mt-2">
                 <label htmlFor="password">Şifre Giriniz</label>
-                <input value={password} onChange={(e)=>{setPassword(e.target.value)}} className="form-control" type="password" id="password" name="password"></input>
+                <input value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control" type="password" id="password" name="password"></input>
                 </div>
                 <div className="form-group mt-2">
                 <button className="btn btn-outline-primary w-100">Giriş Yap</button>

@@ -10,12 +10,14 @@ function RegisterComponent(){
    
     const register = async (e) =>{
         e.preventDefault()
+        console.log(email, password , name)
       let model = {email:email , name: name , password:password}
         try {
            const response=await axios.post("http://localhost:5000/auth/register",model)
             localStorage.setItem("token", response.data.token)
             localStorage.setItem("name", JSON.stringify(response.data.user))
            navigate("/")
+           console.log(email, password , name)
         } catch (error) {
             console.error(error)
         }
@@ -33,18 +35,18 @@ function RegisterComponent(){
         </div>
         <div className="card-body">
            <form onSubmit={register}>
-           <div className="form-group">
+           <div className="form-group mt-2">
                 <label  htmlFor="email">E-Mail Adresi</label>
-                <input value={email} onChange={(e)=>{setEmail(e.target.value)}} className="form-control" type="email" id="email" name="email"></input>
+                <input value={email} onChange={(e)=>setEmail(e.target.value)} className="form-control" type="email" id="email" name="email"></input>
                 </div>
             <div className="form-group mt-2">
                 <label htmlFor="name">Kullanıcı Adı</label>
-                <input value={name} onChange={(e) =>{setName(e.target.value)}} type="text" id="text" name="text" className="form-control"></input>
+                <input value={name} onChange={(e) =>setName(e.target.value)} type="text" id="text" name="text" className="form-control"></input>
             </div>
 
             <div className="form-group mt-2">
                 <label htmlFor="password" >Şifre </label>
-                <input value={password} onChange={(e)=>{setPassword(e.target.value)}} className="form-control" type="password" id="password" name="password"></input>
+                <input value={password} onChange={(e)=>setPassword(e.target.value)} className="form-control" type="password" id="password" name="password"></input>
             </div>
             <div className="form-group mt-2">
                 <button className="btn btn-outline-success w-100" > Kayıt Ol</button>
