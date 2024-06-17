@@ -5,7 +5,7 @@ const { v4: uuidv4 } = require("uuid"); // uniqe değer için kullanılır
 const multer = require("multer");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
-
+ 
 app.use(cors());
 app.use(express.json());
 
@@ -39,6 +39,7 @@ const productSchema = new mongoose.Schema({
   stock: Number,
   price: Number,
   imageUrl: String,
+  categoryName:String
 });
 
 const Product = mongoose.model("Product", productSchema);
@@ -128,12 +129,62 @@ app.get("/products" , async(req , res ) =>{
         res.status(500).json({message:error.message})
     }
 })
-
-
-
 //Product Listesi 
 
+//Dosya Kayıt İşlemi 
+const storage = multer.diskStorage({
+  destination: function(req, file, cb ){
+    cb(null,"D:/Kişisel Çalışmalar/Project/ETicaret-React-NodeJs-MongoDB-/backend/uploads/")
+  },
+  filename:function(req,file,cb){
+    cb(null,Date.now() + "-" + file.originalname)
+  }
+})
+const upload=multer({storage:storage})
 
+
+//Dosya Kayıt İşlemi 
+
+//Add Product İşlemi 
+
+app.post("/products/add" ,upload.single("image"), async (req, res) =>{
+  try {
+    const {name , categoryName , stock , price} =req.body;
+    const product = new Product({
+      _id: uuidv4(),
+      name : name,
+      stock : stock,
+      price: price,
+      categoryName:categoryName,
+      imageUrl : req.file.path
+    })
+    await product.save()
+    res.json({message:"Ürün Kaydı Başarıyla Tamamlandı"})
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
+})
+
+//Add Product İşlemi 
+
+
+
+
+// Remove Product İşlemi 
+
+
+app.post("/products/remove" , async(req ,res ) =>{
+  try {
+    const {_id} = req.body
+    await Product.findByIdAndDelete(_id)
+    res.json({message:"Silme işlemi başarıyla gerçekleşti!"})
+  } catch (error) {
+    res.status(500).json({message:error.message})
+  }
+})
+
+
+// Remove Product İşlemi 
 
 const port = 5000;
 app.listen(5000, () => {
