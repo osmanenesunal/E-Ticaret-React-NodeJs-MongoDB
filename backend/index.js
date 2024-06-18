@@ -180,6 +180,7 @@ app.post("/products/remove" , async(req ,res ) =>{
     res.json({message:"Silme işlemi başarıyla gerçekleşti!"})
   } catch (error) {
     res.status(500).json({message:error.message})
+    console.log("Uygulama http://localhost:" + port + " üzerinden ayakta!");
   }
 })
 
