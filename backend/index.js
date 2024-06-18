@@ -5,10 +5,11 @@ const { v4: uuidv4 } = require("uuid"); // uniqe değer için kullanılır
 const multer = require("multer");
 const cors = require("cors");
 const jwt = require("jsonwebtoken");
+const path = require("path")
  
 app.use(cors());
 app.use(express.json());
-
+app.use("/uploads" , express.static(path.join(__dirname,"uploads")))
 const uri =
   "mongodb+srv://MongoDB:1@reacteticaretdb.bjk9aka.mongodb.net/?retryWrites=true&w=majority&appName=ReactEticaretDB";
 mongoose
@@ -180,7 +181,7 @@ app.post("/products/remove" , async(req ,res ) =>{
     res.json({message:"Silme işlemi başarıyla gerçekleşti!"})
   } catch (error) {
     res.status(500).json({message:error.message})
-    console.log("Uygulama http://localhost:" + port + " üzerinden ayakta!");
+    
   }
 })
 
