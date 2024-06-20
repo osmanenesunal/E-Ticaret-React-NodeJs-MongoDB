@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 function ProductComponent() {
+  const navigate =useNavigate()
   const [products, setProducts] = useState([]);
-  const [name, setName] = useState("")
+  const [name, setName] = useState("") 
   const [categoryName, setCategoryName] = useState("")
   const [price, setPrice] = useState(0)
   const [stock, setStock] = useState(0)
@@ -16,6 +18,7 @@ function ProductComponent() {
 
   useEffect(() => {
     getAll();
+    checkIsAdmin()
   }, []);
 
   const remove = async (_id) => {
@@ -56,6 +59,13 @@ function ProductComponent() {
      setStock(0)
      input.value = ""; 
 
+  }
+
+  const checkIsAdmin = () =>{
+    let user = JSON.parse(localStorage.getItem("user"))
+   if(!user.isAdmin){
+    navigate("/")
+   }
   }
 
   return (
