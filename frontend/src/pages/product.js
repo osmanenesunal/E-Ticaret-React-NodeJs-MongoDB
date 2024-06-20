@@ -4,6 +4,7 @@ import axios from "axios";
 function ProductComponent() {
   const [products, setProducts] = useState([]);
   const [name, setName] = useState("")
+  const [categoryName, setCategoryName] = useState("")
   const [price, setPrice] = useState(0)
   const [stock, setStock] = useState(0)
 
@@ -18,6 +19,8 @@ function ProductComponent() {
   }, []);
 
   const remove = async (_id) => {
+   let confrim = window.confirm("Ürünü silmek istiyor musunuz ? ")
+   if(confrim){
     let model = { _id: _id };
     let response = await axios.post(
       "http://localhost:5000/products/remove",
@@ -25,6 +28,7 @@ function ProductComponent() {
     );
     alert(response.data.message);
     await getAll();
+   }
   };
 
 
@@ -33,6 +37,7 @@ function ProductComponent() {
     var input = document.querySelector("input[type='file']")
       const formData = new FormData()
       formData.append("name" , name) 
+      formData.append("categoryName" , categoryName)
       formData.append("stock" , stock) 
       formData.append("price" , price) 
       formData.append("image" , input.files[0], input.files[0].name) 
@@ -41,6 +46,15 @@ function ProductComponent() {
       alert(response.data.message)
        
       getAll()
+
+    let element = document.getElementById("addModalCloseBtn")
+      element.click()
+
+     setName("")
+     setCategoryName(0)
+     setPrice(0)
+     setStock(0)
+     input.value = ""; 
 
   }
 
@@ -110,9 +124,9 @@ function ProductComponent() {
     <div className="modal-content">
       <div className="modal-header">
         <h5 className="modal-title" id="addModalLabel">  Ürün Ekle</h5>
-        <button type="button" className="close" data-dismiss="modal" 
+        <button type="button" id="addModalCloseBtn" className="btn-close" data-dismiss="modal" 
         aria-label="Close">
-          <span aria-hidden="true">&times;</span>
+          
         </button>
       </div>
       <form onSubmit={add}>
@@ -120,6 +134,18 @@ function ProductComponent() {
                 <div className="form-group">
                   <label htmlFor="name">Ürün Adı:  </label>
                   <input className="form-control" value={name} onChange={(e) => setName(e.target.value)} name="name" id="name"></input>
+                </div>
+                <div className="form-group mt-2">
+                  <label htmlFor="categoryName">Kategori Adı:  </label>
+                 <select className="form-control" id="categoryName" name="categoryName" value={categoryName} onChange={(e) => setCategoryName(e.target.value)}>
+                  <option value="0">Lütfen Seçim Yapınız...</option>
+                    <option>Sebze</option>
+                    <option>Meyve</option>
+                    <option>Teknoloji</option>
+                    <option>Diğer</option>
+                   
+
+                 </select>
                 </div>
                 <div className="form-group mt-2">
                   <label htmlFor="stock">Stok Adedi:  </label>
